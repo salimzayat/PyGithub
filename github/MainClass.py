@@ -186,6 +186,18 @@ class Github(object):
             url_parameters
         )
 
+    def get_organizations(self, since=github.GithubObject.NotSet):
+        assert since is github.GithubObject.NotSet or isinstance(since, (int, long)), since
+        url_parameters = dict()
+        if since is not github.GithubObject.NotSet:
+            url_parameters["since"] = since
+        return github.PaginatedList.PaginatedList(
+            github.Organization.Organization,
+            self.__requester,
+            "/organizations",
+            url_parameters
+        ) 
+
     def get_organization(self, login):
         """
         :calls: `GET /orgs/:org <http://developer.github.com/v3/orgs>`_
